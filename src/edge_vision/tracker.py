@@ -61,8 +61,9 @@ def run_tracker():
         if frame_count % frame_skip != 0:
             continue
 
-        results = model.track(frame, persist=True, classes=[0], verbose=False, device=0)
-        
+        compute_device = 0 if torch.cuda.is_available() else "cpu"
+        results = model.track(frame, persist=True, classes=[0], verbose=False, device=compute_device)
+
         if results[0].boxes is not None and results[0].boxes.id is not None:
             boxes = results[0].boxes.xyxy.cpu().numpy()
             track_ids = results[0].boxes.id.int().cpu().numpy()

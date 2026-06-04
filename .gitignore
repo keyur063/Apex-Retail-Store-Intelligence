@@ -9,7 +9,6 @@ venv/
 env/
 ENV/
 
-*.db
 *.sqlite
 *.sqlite3
 *.csv

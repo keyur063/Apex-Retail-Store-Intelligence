@@ -6,6 +6,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from src.backend.database import SessionLocal, StoreVisit, ZoneVisit, PosTransaction
 import os
+from contextlib import asynccontextmanager
+from typing import AsyncIterator
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    print("\nAPEX RETAIL INTELLIGENCE SERVER IS LIVE!", flush=True)
+    print("View Dashboard (CLICK HERE): http://127.0.0.1:8000\n", flush=True)
+    yield
 
 app = FastAPI(title="Apex Retail Store Intelligence API")
 

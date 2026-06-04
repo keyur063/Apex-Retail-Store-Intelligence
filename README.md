@@ -1,21 +1,30 @@
-"Apex Retail Store Intelligence" sounds incredibly professional, and it perfectly matches the header I saw in your dashboard screenshots! It gives the project a true enterprise-grade feel.
+# Apex Retail Store Intelligence: Enterprise Edge-to-Cloud Analytics
 
-Here is your final, polished `README.md` with the updated branding.
-
-Copy and paste this to overwrite your current README:
-
-```markdown
-# 🛒 Apex Retail Store Intelligence: Enterprise Edge-to-Cloud Analytics
-
-Apex Retail Store Intelligence is a decoupled, edge-to-cloud computer vision pipeline designed for retail environments. It utilizes YOLOv8 and ByteTrack on edge devices (or cloud GPUs) to track shoppers, calculate dwell times in specific store zones, and transmit live telemetry via HTTP webhooks to a FastAPI backend.
+Apex Retail Store Intelligence is a decoupled, containerized, edge-to-cloud computer vision pipeline designed for retail environments. It utilizes YOLOv8 and ByteTrack on edge devices (or cloud GPUs) to track shoppers, calculate dwell times in specific store zones, and transmit live telemetry via HTTP webhooks to a FastAPI backend.
 
 The system dynamically calculates **Unique Visitors**, **Zone Dwell Times** (Entrance, Aisle, Checkout), and **POS Conversion Rates** in real-time.
 
 ---
 
-## 🏗️ Architecture Overview
+## Quick Start
+To respect your time during evaluation, this repository is pre-seeded with a complete SQLite database representing the processed AI telemetry of all 8 store cameras. 
 
-This project is highly scalable and split into two distinct, decoupled components:
+**Zero manual setup is required.**
+1. Clone this repository.
+2. Run this command in your terminal:
+   ```bash
+   docker-compose up --build
+    ```
+
+3. The Edge AI container will safely exit (heavy video files are excluded to save bandwidth), and the Cloud container will serve the pre-processed analytics.
+4. Click the generated **`http://127.0.0.1:8000`** link in your terminal to instantly view the fully populated live dashboard.
+
+---
+
+## Architecture Overview
+
+This project is highly scalable and completely Dockerized, split into two decoupled microservices communicating over an internal Docker network:
+
 1. **The Cloud (Backend):** A FastAPI server and SQLite database that aggregates telemetry and serves the live analytical dashboard.
 2. **The Edge (Vision):** A YOLOv8 + ByteTrack Python script that processes static camera footage, utilizes a frame-skip optimization, maps spatial coordinates to store zones, and sends data via webhooks.
 
@@ -23,118 +32,61 @@ This project is highly scalable and split into two distinct, decoupled component
 
 ## 📂 Project Structure
 
-To maintain a clean and lightweight repository, raw video files (`.mp4`) and heavy ML model weights (`.pt`) are intentionally excluded via `.gitignore`. 
+To maintain a clean and lightweight repository, raw video files (`.mp4`), heavy ML model weights (`.pt`), and environment secrets (`.env`) are strictly excluded via `.gitignore` and `.dockerignore`.
 
 ```text
 apex-retail-intelligence/
 ├── data/
 │   ├── zones.json                  # Spatial boundary mappings
+│   ├── store_intelligence.db       # Pre-seeded database for rapid evaluation
 │   ├── Store-1/                    # (Ignored by Git) Place CAM videos here
 │   └── Store-2/                    # (Ignored by Git) Place CAM videos here
 ├── src/
 │   ├── backend/
-│   │   ├── main.py                 # FastAPI server & Dashboard UI
-│   │   └── models.py               # Database schemas
+├   ├   ├── main.py                 # FastAPI server & Dashboard UI
+│   │   ├── ingestor.py             # Webhook processing & data routing
+│   │   └── database.py             # SQLite connection & ORM models
 │   └── edge_vision/
 │       ├── run_store.py            # Orchestrator script
 │       ├── tracker.py              # YOLOv8 + ByteTrack engine
 │       └── zone_mapper.py          # Spatial logic
-├── .env.example                    # Template for environment variables
-├── .gitignore                      # Keeps repo clean of videos and weights
-├── requirements.txt                # Python dependencies
+├── Dockerfile                      # Cloud/Backend container instructions
+├── Dockerfile.edge                 # Edge AI container instructions
+├── docker-compose.yml              # Microservice orchestration
+├── requirements.txt                
+├── requirements-backend.txt        
 └── README.md
 
 ```
 
 ---
 
-## ⚙️ Prerequisites & Setup
+## How to Run the Live AI Pipeline (Optional)
 
-### 1. Install Dependencies
+If you wish to test the actual YOLOv8 inference locally rather than viewing the pre-seeded evaluation dashboard, follow these steps:
 
-Ensure you have Python 3.9+ installed. Install the required packages using the provided requirements file:
+### 1. Insert Video Data
 
-```bash
-pip install -r requirements.txt
-
-```
-
-### 2. Configure the Data Directory
-
-Before running the system, you must structure your `data/` folder and insert your `.mp4` camera footages locally:
+You must structure your `data/` folder and insert your `.mp4` camera footages locally. The system is designed to gracefully skip any missing files.
 
 * `data/Store-1/CAM 1 - zone.mp4`
-* `data/Store-2/CAM 1 - zone.mp4`
 * *(etc.)*
 
-### 3. Set Up Environment Variables (Security)
+### 2. Launch the Architecture
 
-To keep the webhook URLs secure, this project uses `python-dotenv`.
+Run the standard Docker Compose command. Docker will automatically handle the OS dependencies, hardware fallbacks (CPU vs GPU), network routing, and volume mapping.
 
-1. Create a file named `.env` in the root directory.
-2. Add your Ngrok (or production) API URL:
-
-```env
-API_URL=https://<YOUR_NGROK_URL>.ngrok-free.dev/api/live-events
-
+```bash
+docker-compose up --build
 ```
 
-*(If no `.env` file is found, the system will safely fallback to `http://127.0.0.1:8000/api/live-events` for local testing).*
+### 3. View Live Telemetry
+
+Open **`http://127.0.0.1:8000`** in your browser. As the Edge AI container processes the videos frame-by-frame, it fires HTTP Webhooks to the Backend container. You will see the dashboard numbers (Unique Visitors, Dwell Times) update dynamically in real-time.
 
 ---
 
-## 🚀 How to Run the Pipeline
+### *Note on GPU Processing (Google Colab)*
 
-Running this system requires establishing a secure tunnel between the Edge AI and the Backend. **You will need three separate terminal windows.**
+*The `store_intelligence.db` file provided in this repository was generated by running the edge orchestrator on a T4 GPU via Google Colab. The backend effortlessly decoupled the data ingestion from the presentation layer, allowing the local dashboard to render the cloud-processed results.*
 
-### Step 1: Start the Backend Server (Terminal 1)
-
-This starts the FastAPI server and initializes the SQLite database.
-
-```bash
-python -m uvicorn src.backend.main:app
-
-```
-
-*The live dashboard is now available at: `http://127.0.0.1:8000*`
-
-### Step 2: Establish the Ngrok Tunnel (Terminal 2)
-
-To allow the Edge AI (especially if running on Google Colab) to send webhooks to your local machine, open a new terminal and start Ngrok on port 8000:
-
-```bash
-ngrok http 8000
-
-```
-
-**Important:** Copy the public `Forwarding` URL provided by Ngrok and place it in your `.env` file!
-
-### Step 3: Run the Edge AI Orchestrator (Terminal 3)
-
-Launch the computer vision pipeline. This will systematically process all store cameras and stream the telemetry back to your dashboard.
-
-**To run locally (Requires NVIDIA GPU):**
-
-```bash
-python src/edge_vision/run_store.py
-
-```
-
-**To run via Google Colab (Recommended for Mac/CPU users):**
-
-1. Zip the project folder (ensure `zones.json` and videos are inside).
-2. Upload to a Google Colab notebook with a **T4 GPU** enabled.
-3. Unzip the folder.
-4. Set your environment variable in Colab: `%env API_URL=https://<YOUR_NGROK_URL>.ngrok-free.dev/api/live-events`
-5. Execute the orchestrator: `!python src/edge_vision/run_store.py`
-
----
-
-## 📊 Viewing the Data
-
-Once the Edge AI begins processing, open **`http://127.0.0.1:8000`** in your browser.
-The dashboard will update dynamically. If you stop the Edge AI or restart the FastAPI server, your data remains safely stored in the local SQLite database.
-
-```
-
-```

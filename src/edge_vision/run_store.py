@@ -1,5 +1,15 @@
 import subprocess
 import sys
+import os 
+import glob
+
+video_files = glob.glob("data/Store-*/*.mp4")
+
+if not video_files:
+    print("\nNO VIDEO FILES FOUND")
+    print("Please place .mp4 files in the data directory.")
+    print("The system is waiting... Backend is still live at http://localhost:8000\n\n")
+    sys.exit(0)
 
 # Camera Configuration
 STORES_CONFIG = {
@@ -25,6 +35,10 @@ try:
         print(f"Entering {store_id}...")
         
         for cam in cameras:
+            if not os.path.exists(cam["video"]):
+                print(f"Skipping {cam['id']}: File '{cam['video']}' not found.")
+                continue
+
             print(f"Processing {cam['id']} ({cam['video']})...")
             
             # Run launches tracker.py
