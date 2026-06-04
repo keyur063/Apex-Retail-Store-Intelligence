@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Enterprise Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 40px; color: #333;}
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;}
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .metric-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; transition: transform 0.2s;}
+        .metric-card:hover { transform: translateY(-5px); }
+        .metric-value { font-size: 32px; font-weight: bold; color: #6C5CE7; margin-bottom: 5px;}
+        .metric-label { font-size: 13px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        select { padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; width: 250px; cursor: pointer; outline: none;}
+        .zone-card { background: #fdfbf7; border: 1px solid #e6e0d4; }
+        .zone-val { color: #d35400; }
+    </style>
+</head>
+<body>
+    
+    <div class="header">
+        <h2>Apex Retail Intelligence</h2>
+        <select id="storeSelector" onchange="fetchMetrics()">
+            <option value="store-1">Location: Store 1</option>
+            <option value="store-2">Location: Store 2</option>
+        </select>
+    </div>
+    
+    <div class="grid" id="dashboard">
+        <div class="metric-card"><div class="metric-value" id="val-visitors">--</div><div class="metric-label">Unique Visitors</div></div>
+        <div class="metric-card"><div class="metric-value" id="val-sales">--</div><div class="metric-label">Total Transactions</div></div>
+        <div class="metric-card"><div class="metric-value" id="val-conv">--%</div><div class="metric-label">Conversion Rate</div></div>
+        
+        <div class="metric-card zone-card"><div class="metric-value zone-val" id="val-dwell-ent">--</div><div class="metric-label">Avg Dwell: Entrance</div></div>
+        <div class="metric-card zone-card"><div class="metric-value zone-val" id="val-dwell-aisle">--</div><div class="metric-label">Avg Dwell: Aisle</div></div>
+        <div class="metric-card zone-card"><div class="metric-value zone-val" id="val-dwell-check">--</div><div class="metric-label">Avg Dwell: Checkout</div></div>
+    </div>
+
+    <script>
+        async function fetchMetrics() {
+            const storeId = document.getElementById("storeSelector").value;
+            try {
+                const response = await fetch(`/api/metrics?store_id=${storeId}`);
+                const data = await response.json();
+                
+                document.getElementById("val-visitors").innerText = data.total_visitors;
+                document.getElementById("val-sales").innerText = data.total_transactions;
+                document.getElementById("val-conv").innerText = data.conversion_rate.toFixed(2) + "%";
+                
+                document.getElementById("val-dwell-ent").innerText = data.dwell_entrance;
+                document.getElementById("val-dwell-aisle").innerText = data.dwell_aisle;
+                document.getElementById("val-dwell-check").innerText = data.dwell_checkout;
+            } catch (error) {
+                console.error("Error fetching metrics:", error);
+            }
+        }
+        
+        window.onload = fetchMetrics;
+        setInterval(fetchMetrics, 3000); 
+    </script>
+</body>
+</html>

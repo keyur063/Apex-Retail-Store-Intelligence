@@ -1,0 +1,24 @@
+# ==========================================
+# Core Data Engineering & Database
+# ==========================================
+numpy==1.26.4
+pandas==2.2.1
+SQLAlchemy==2.0.28
+requests==2.31.0
+
+# ==========================================
+# API Backend Server
+# ==========================================
+fastapi==0.110.0
+uvicorn==0.29.0
+pydantic==2.6.4
+python-dotenv==1.2.2
+
+# ==========================================
+# Computer Vision & Machine Learning
+# ==========================================
+opencv-python-headless==4.9.0.80
+ultralytics
+torch==2.5.1 
+torchvision==0.20.1
+lapx>=0.5.2

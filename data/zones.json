@@ -1,0 +1,124 @@
+{
+  "store-1": {
+    "cam_01": {
+      "Z_ENTRANCE": {
+        "zone_id": "Z_ENTRANCE",
+        "name": "Entrance",
+        "type": "ENTRANCE",
+        "polygon": [[2, 445], [442, 410], [558, 1065], [24, 1058]]
+      },
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[21, 440], [1658, 240], [1902, 700], [1888, 1065], [30, 1070]]
+      },
+      "Z_CHECKOUT": {
+        "zone_id": "Z_CHECKOUT",
+        "name": "Checkout",
+        "type": "BILLING",
+        "polygon": [[1422, 133], [1919, 256], [1894, 996], [1318, 652]]
+      }
+    },
+    "cam_02": {
+      "Z_ENTRANCE": {
+        "zone_id": "Z_ENTRANCE",
+        "name": "Entrance",
+        "type": "ENTRANCE",
+        "polygon": [[1265, 632], [1249, 1051], [1902, 1070], [1900, 669]]
+      },
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[52, 473], [611, 298], [1919, 673], [1808, 1068], [140, 1068]]
+      },
+      "Z_CHECKOUT": {
+        "zone_id": "Z_CHECKOUT",
+        "name": "Checkout",
+        "type": "BILLING",
+        "polygon": [[15, 325], [576, 233], [842, 349], [132, 990]]
+      }
+    },
+    "cam_03": {
+      "Z_ENTRANCE": {
+        "zone_id": "Z_ENTRANCE",
+        "name": "Entrance",
+        "type": "ENTRANCE",
+        "polygon": [[856, 104], [786, 877], [1309, 1045], [1488, 790], [1298, 104]]
+      },
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[259, 424], [661, 230], [788, 896], [1334, 279], [1412, 11], [196, 75]]
+      }
+    },
+    "cam_04": {
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[5, 82], [848, 158], [1116, 696], [896, 1060], [16, 1072]]
+      },
+      "Z_CHECKOUT": {
+        "zone_id": "Z_CHECKOUT",
+        "name": "Checkout",
+        "type": "BILLING",
+        "polygon": [[12, 69], [854, 102], [1312, 599], [1054, 1061], [12, 1070]]
+      }
+    }
+  },
+  "store-2": {
+    "cam_01": {
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[1, 451], [522, 97], [946, 560], [929, 1069], [2, 1068]]
+      }
+    },
+    "cam_02": {
+      "Z_ENTRANCE": {
+        "zone_id": "Z_ENTRANCE",
+        "name": "Entrance",
+        "type": "ENTRANCE",
+        "polygon": [[218, 101], [262, 997], [295, 1068], [760, 1068], [844, 109]]
+      },
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[7, 684], [958, 564], [932, 1077], [9, 1066]]
+      }
+    },
+    "cam_03": {
+      "Z_ENTRANCE": {
+        "zone_id": "Z_ENTRANCE",
+        "name": "Entrance",
+        "type": "ENTRANCE",
+        "polygon": [[229, 105], [288, 942], [357, 1053], [716, 1057], [844, 271], [739, 19]]
+      },
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[13, 677], [884, 556], [959, 729], [909, 1062], [16, 1065]]
+      }
+    },
+    "cam_04": {
+      "Z_AISLE": {
+        "zone_id": "Z_AISLE",
+        "name": "Aisle",
+        "type": "SHELF",
+        "polygon": [[6, 16], [78, 7], [16, 238], [71, 567], [186, 556], [296, 15], [475, 7], [494, 293], [604, 274], [628, 16], [743, 8], [774, 182], [903, 11], [959, 123], [948, 211], [810, 225], [772, 395], [831, 558], [951, 560], [768, 1064], [694, 607], [471, 508], [346, 418], [324, 805], [265, 1065], [8, 1064]]
+      },
+      "Z_CHECKOUT": {
+        "zone_id": "Z_CHECKOUT",
+        "name": "Checkout",
+        "type": "BILLING",
+        "polygon": [[272, 178], [771, 191], [863, 1055], [181, 1066]]
+      }
+    }
+  }
+}
